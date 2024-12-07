@@ -1,0 +1,627 @@
+#include <LPC21xx.H> 
+#define CR 0x0D
+#define bit(x) (1<<(x+2))
+#define delay for(i=0;i<3000;i++);
+void init_serial (void); 
+int putchar (int ch);
+int getchar (void);
+void lcd_int();
+void dat(unsigned char);
+void cmd(unsigned char);
+void store_English1();
+void store_Hindi1();
+void store_Hindi2();
+void store_Tamil1();
+void store_Tamil2();
+void store_Telugu1();
+void English1(void);
+void Hindi1(void);
+void Hindi2(void);
+void Tamil1(void);
+void Tamil2(void);
+void Telugu1(void);
+unsigned char test; 
+unsigned int i;
+char Ptr3[]={"Tata Bus"};
+char Ptr4[]={"Bus 49B 12:25pm P3"};
+char Ptr5[]={"Bus 7G 09:11pm P5"};
+int main(void)
+ {
+ 	char x;
+  	char *Ptr = "Choose the Language -> 1.English  2.Hindi  3.Tamil 4.Telugu";char *Ptr2="Bus 1 or 2";   int j=0,x1,k;
+  	VPBDIV = 0x00; // Divide Pclk by two 
+    IO0DIR|=0XFFFF;
+    lcd_int();
+                  //Storing the custom characters
+  	init_serial();
+   	while(1)
+   	{
+   		if(j==0)
+		{
+     		while (*Ptr) 
+	 		{ 
+	   			putchar(*Ptr++);
+	  		}
+	  		x = getchar();
+	  		j=1;
+		}
+	  	if(x == '1')
+		{
+			while (*Ptr2) 
+	 		{ 
+	   			putchar(*Ptr2++);
+	  		}
+	  		x1 = getchar();
+			if(x1=='1')
+			{
+			store_English1();
+	 		English1();
+			cmd(0xc0);
+               k=0;
+              while(Ptr4[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr4[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c); 
+			}
+            if(x1=='2')
+             {
+              cmd(0x80);
+               k=0;
+              while(Ptr3[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr3[k]);
+				 k++;
+				}
+				cmd(0xc0);
+               k=0;
+              while(Ptr4[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr4[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c); 
+			}
+	  	}
+		if(x == '2')
+		{
+			while (*Ptr2) 
+	 		{ 
+	   			putchar(*Ptr2++);
+	  		}
+	  		x1 = getchar();
+			if(x1=='1')
+			{
+			store_Hindi1();
+	 		Hindi1();
+			cmd(0xc0);
+               k=0;
+              while(Ptr5[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr5[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c);
+			}
+			if(x1=='2')
+			{
+			store_Hindi2();
+	 		Hindi2();
+			cmd(0xc0);
+               k=0;
+              while(Ptr5[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr5[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c);
+			}
+	  	}
+		if(x == '3')
+		{
+			while (*Ptr2) 
+	 		{ 
+	   			putchar(*Ptr2++);
+	  		}
+	  		x1 = getchar();
+			if(x1=='1')
+			{
+			store_Tamil1();
+	 		Tamil1();
+			cmd(0xc0);
+               k=0;
+              while(Ptr5[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr5[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c);
+			}
+			if(x1=='2')
+			{
+			store_Tamil2();
+	 		Tamil2();
+			cmd(0xc0);
+               k=0;
+              while(Ptr5[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr5[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c);
+			}
+	  	}
+		if(x == '4')
+		{
+			while (*Ptr2) 
+	 		{ 
+	   			putchar(*Ptr2++);
+	  		}
+	  		x1 = getchar();
+			if(x1=='1')
+			{
+			store_Telugu1();
+	 		Telugu1();
+			cmd(0xc0);
+               k=0;
+              while(Ptr5[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr5[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c);
+			}
+			if(x1=='2')
+			{
+			store_Telugu1();
+	 		Telugu1();
+			cmd(0xc0);
+               k=0;
+              while(Ptr5[k]!='\0')
+				{
+				 delay(5); 
+				 dat(Ptr5[k]);
+				 k++;
+				}
+				cmd(0x18);
+				cmd(0x1c);		}
+	  	}
+	 }
+ }
+
+void English1(void)
+{
+	cmd(0x80);        //Location
+    dat(0);
+	delay(1);
+    dat(1);
+	delay(1);
+	dat(2);
+	delay(1);
+    dat(3);
+	delay(1);
+}
+
+void Hindi1(void)
+{
+	cmd(0x80);        //Location
+    dat(0);
+	delay(1);
+    dat(1);
+	delay(1);
+}
+
+void Hindi2(void)
+{
+	cmd(0x80);        //Location
+    dat(0);
+	delay(1);
+    dat(1);
+	delay(1);
+	dat(2);
+	delay(1);
+    dat(3);
+	delay(1);
+	dat(4);
+	delay(1);
+}
+
+void Tamil1(void)
+{
+	cmd(0x80);        //Location
+    dat(0);
+	delay(1);
+    dat(1);
+	delay(1);
+	dat(2);
+	delay(1);
+    dat(3);
+	delay(1);
+}
+
+void Telugu1(void)
+{
+	cmd(0x80);        //Location
+    dat(0);
+	delay(1);
+    dat(1);
+	delay(1);
+	dat(2);
+	delay(1);
+    dat(3);
+	delay(1);
+	dat(4);
+	delay(1);
+	dat(5);
+}
+
+void Tamil2(void)
+{
+	cmd(0x80);        //Location
+    dat(0);
+	delay(1);
+    dat(1);
+	delay(1);
+	dat(2);
+	delay(1);
+    dat(3);
+	delay(1);
+	dat(4);
+	delay(1);
+}
+
+void init_serial (void)
+ {
+   PINSEL0 = 0x00000005; // Enable RxD0->P0.1->UcPIN->21   and       TxD0->P0.0->UcPIN->19 
+   U0LCR   = 0x00000083;   // 8 bits, no Parity, 1 Stop bit 
+   U0DLL   = 0x00000062;   // 9600 Baud Rate @ 15MHz VPB Clock 
+   U0LCR   = 0x00000003; 
+ } 
+  
+int putchar (int ch)
+ { if (ch == '\n')
+     {
+	   while (!(U0LSR & 0x20)); 
+	    U0THR = CR; 
+	 } while (!(U0LSR & 0x20));
+	 return (U0THR = ch); 
+ } 
+   
+int getchar (void)
+ {
+     while (!(U0LSR & 0x01));
+     return (U0RBR);
+ }
+ 
+ void store_English1()
+{
+    cmd(64);          //First location
+    dat(0x00);
+    dat(0x1f);
+    dat(0x04);
+    dat(0x04);
+    dat(0x04);
+    dat(0x04);
+    dat(0x04);
+	dat(0x00);
+ 
+    cmd(72);          //Second location
+    dat(0x04);
+    dat(0x0a);
+    dat(0x11);
+    dat(0x11);
+    dat(0x1f);
+    dat(0x11);
+    dat(0x11); 
+    dat(0x00);
+ 
+    cmd(80);            //Third location
+    dat(0x00);
+    dat(0x1f);
+    dat(0x04);
+    dat(0x04);
+    dat(0x04);
+    dat(0x04);
+    dat(0x04);
+	dat(0x00);
+
+    cmd(88);            //Fourth location
+    dat(0x04);
+    dat(0x0a);
+    dat(0x11);
+    dat(0x11);
+    dat(0x1f);
+    dat(0x11);
+    dat(0x11);
+    dat(0x00);
+}
+
+
+void store_Hindi1()
+{
+    cmd(64);          //First location
+    dat(0x1f);
+    dat(0x05);
+    dat(0x0d);
+    dat(0x11);
+    dat(0x11);
+    dat(0x0d);
+	dat(0x00);
+	dat(0x00);
+ 
+    cmd(72);          //Second location
+    dat(0x1f);
+    dat(0x05);
+    dat(0x0d);
+    dat(0x11);
+    dat(0x11);
+    dat(0x0d);
+	dat(0x00);
+	dat(0x00);
+
+}
+
+void store_Hindi2()
+{
+    cmd(64);          //First location
+    dat(0x00);
+    dat(0x1f);
+    dat(0x05);
+    dat(0x05);
+    dat(0x05);
+    dat(0x15);
+    dat(0x09);
+	dat(0x00);
+ 
+    cmd(72);          //Second location
+    dat(0x07);
+    dat(0x1f);
+    dat(0x09);
+    dat(0x05);
+    dat(0x09);
+    dat(0x05);
+    dat(0x00);
+    dat(0x00);
+ 
+    cmd(80);            //Third location
+    dat(0x00);
+    dat(0x1f);
+    dat(0x01);
+    dat(0x0d);
+    dat(0x1b);
+    dat(0x17);
+    dat(0x0d);
+    dat(0x00);
+
+    cmd(88);            //Fourth location
+    dat(0x00);
+    dat(0x0f);
+    dat(0x04);
+    dat(0x02);
+    dat(0x04);
+    dat(0x02);
+    dat(0x01);
+    dat(0x00);
+
+    cmd(96);            //Fifth location
+    dat(0x00);
+    dat(0x0b);
+    dat(0x15);
+    dat(0x05);
+    dat(0x09);
+    dat(0x13);
+    dat(0x0d);
+    dat(0x00);
+}
+
+
+void store_Tamil1()
+{
+    cmd(64);          //First location
+    dat(0x00);
+    dat(0x10);
+    dat(0x10);
+    dat(0x10);
+    dat(0x10);
+    dat(0x1f);
+    dat(0x00);
+	dat(0x00);
+ 
+    cmd(72);          //Second location
+    dat(0x00);
+    dat(0x1f);
+    dat(0x12);
+    dat(0x12);
+    dat(0x12);
+    dat(0x12);
+    dat(0x00);
+    dat(0x00);
+ 
+    cmd(80);            //Third location
+    dat(0x00);
+    dat(0x10);
+    dat(0x10);
+    dat(0x10);
+    dat(0x10);
+    dat(0x1f);
+    dat(0x00);
+	dat(0x00);
+
+    cmd(88);            //Fourth location
+    dat(0x00);
+    dat(0x1f);
+    dat(0x12);
+    dat(0x12);
+    dat(0x12);
+    dat(0x12);
+    dat(0x00);
+    dat(0x00);
+}
+void store_Telugu1()
+{
+  cmd(64);          //First location
+		dat(0x00);  // 0b00000
+		dat(0x10);  // 0b10000
+		dat(0x19);  // 0b11001
+		dat(0x19);  // 0b11001
+		dat(0x11);  // 0b10001
+		dat(0x15);  // 0b10101
+		dat(0x1F);  // 0b11111
+		dat(0x00);  // 0b00000
+
+ 
+    cmd(72);          //Second location
+		dat(0x00);  // 0b00000
+		dat(0x00);  // 0b00000
+		dat(0x1F);  // 0b11111
+		dat(0x05);  // 0b00101
+		dat(0x07);  // 0b00111
+		dat(0x00);  // 0b00000
+		dat(0x00);  // 0b00000
+		dat(0x00);  // 0b00000
+
+ 
+    cmd(80);            //Third location
+		dat(0x00);  // 0b00000
+		dat(0x10);  // 0b10000
+		dat(0x19);  // 0b11001
+		dat(0x19);  // 0b11001
+		dat(0x11);  // 0b10001
+		dat(0x15);  // 0b10101
+		dat(0x1F);  // 0b11111
+		dat(0x00);  // 0b00000
+
+    cmd(88);            //Fourth location
+		dat(0x08);  // 0b01000
+dat(0x15);  // 0b10101
+dat(0x05);  // 0b00101
+dat(0x09);  // 0b01001
+dat(0x11);  // 0b10001
+dat(0x15);  // 0b10101
+dat(0x0E);  // 0b01110
+dat(0x00);  // 0b00000
+
+
+	 cmd(96);
+		 dat(0x04);  // 0b00100
+			dat(0x08);  // 0b01000
+			dat(0x1A);  // 0b11010
+			dat(0x01);  // 0b00001
+			dat(0x01);  // 0b00001
+			dat(0x19);  // 0b11001
+			dat(0x16);  // 0b10110
+			dat(0x00);  // 0b00000
+
+	 cmd(104);
+dat(0x00);  // 0b00000
+dat(0x00);  // 0b00000
+dat(0x04);  // 0b00100
+dat(0x02);  // 0b00010
+dat(0x02);  // 0b00010
+dat(0x12);  // 0b10010
+dat(0x0C);  // 0b01100
+dat(0x00);  // 0b00000
+
+
+}
+void store_Tamil2()
+{
+    cmd(64);          //First location
+    dat(0x00);
+    dat(0x00);
+    dat(0x0f);
+    dat(0x0a);
+    dat(0x1f);
+    dat(0x11);
+    dat(0x1f);
+	dat(0x00);
+ 
+    cmd(72);          //Second location
+    dat(0x02);
+    dat(0x04);
+    dat(0x0f);
+    dat(0x0a);
+    dat(0x02);
+    dat(0x04);
+    dat(0x08);
+    dat(0x00);
+ 
+    cmd(80);            //Third location
+    dat(0x00);
+    dat(0x00);
+    dat(0x11);
+    dat(0x11);
+    dat(0x11);
+    dat(0x11);
+    dat(0x1f);
+    dat(0x00);
+
+    cmd(88);            //Fourth location
+    dat(0x00);
+    dat(0x00);
+    dat(0x0f);
+    dat(0x0a);
+    dat(0x02);
+    dat(0x04);
+    dat(0x08);
+    dat(0x00);
+
+    cmd(96);            //Fifth location
+    dat(0x04);
+    dat(0x1f);
+    dat(0x14);
+    dat(0x1f);
+    dat(0x15);
+    dat(0x1d);
+    dat(0x01);
+    dat(0x07);
+	dat(0x00);
+}
+
+
+void lcd_int()
+{
+    cmd(0x38);
+    cmd(0x0c);
+    cmd(0x06);
+    cmd(0x01);
+    cmd(0x80);
+}
+
+void cmd(unsigned char a)
+{
+    IO0PIN&=0x00;
+    IO0PIN|=(a<<2);
+    IO0CLR|=bit(8);                //rs=0
+    IO0CLR|=bit(9);                //rw=0
+    IO0SET|=bit(10);               //en=1
+    delay;
+    IO0CLR|=bit(10);               //en=0
+}
+
+void dat(unsigned char b)
+{
+    IO0PIN&=0x00;
+    IO0PIN|=(b<<2);
+    IO0SET|=bit(8);                //rs=1
+    IO0CLR|=bit(9);                //rw=0
+    IO0SET|=bit(10);               //en=1
+    delay;
+    IO0CLR|=bit(10);               //en=0
+}
